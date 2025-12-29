@@ -1,15 +1,58 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>セントラルホテルグループQ&Aチャット</title>
 
 <style>
 *, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
 
-/* ===== 共通 ===== */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+
+#bg-layer {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  background: #ffffff;
+  z-index: 0;
+  pointer-events: none; 
+}
+
+.site-header {
+  background: #2e7d32;
+  color: #fff;
+  padding: 16px;
+}
+
+.site-main {
+  padding: 16px;
+  line-height: 1.8;
+}
+
+.site-footer {
+  padding: 16px;
+  background: #f0f0f0;
+  font-size: 12px;
+}
+
+
+#chat-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(4px);
+}
+
+
+
 #chatbox {
   width: 360px;
   max-width: 95vw;
@@ -25,11 +68,10 @@ html, body { margin: 0; padding: 0; }
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  z-index: 9999;
 }
 
 #chatHeader {
-  background: #2e7d32;
+  background: #4376DF;
   color: white;
   padding: 10px;
   font-size: 14px;
@@ -52,15 +94,24 @@ html, body { margin: 0; padding: 0; }
 
 .msg {
   margin: 6px 0;
-  padding: 8px 10px;
+  padding: 10px 12px;
   border-radius: 10px;
-  max-width: 80%;
+  max-width: 95%;
   word-wrap: break-word;
   font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
 }
 
-.user { background: #d1f0d1; align-self: flex-end; }
-.bot  { background: #f0f0f0; align-self: flex-start; }
+.user {
+  background: #d1f0d1;
+  align-self: flex-end;
+}
+
+.bot {
+  background: #f0f0f0;
+  align-self: flex-start;
+}
 
 #inputArea {
   display: flex;
@@ -77,7 +128,6 @@ html, body { margin: 0; padding: 0; }
   font-size: 14px;
 }
 
-/* ===== ボタンサイズ完全固定 ===== */
 #micBtn,
 #sendBtn {
   width: 44px;
@@ -85,7 +135,7 @@ html, body { margin: 0; padding: 0; }
   padding: 0;
   border: none;
   border-radius: 8px;
-  background: #0078d7;
+  background: #2e7d32;
   color: white;
   font-size: 16px;
   cursor: pointer;
@@ -95,14 +145,11 @@ html, body { margin: 0; padding: 0; }
   flex-shrink: 0;
 }
 
-/* ===== 録音中：色のみ変更 ===== */
 #micBtn.recording {
-  background: #0078d7;
   color: #ff5252;
   position: relative;
 }
 
-/* ===== 赤丸 外側パルス（タップ非干渉） ===== */
 #micBtn.recording::after {
   content: "";
   position: absolute;
@@ -119,7 +166,6 @@ html, body { margin: 0; padding: 0; }
   100% { box-shadow: 0 0 0 0 rgba(255,82,82,0); }
 }
 
-/* ===== スマホ中央固定 ===== */
 @media screen and (max-width: 600px) {
   #chatbox {
     left: 50%;
@@ -134,12 +180,35 @@ html, body { margin: 0; padding: 0; }
 
 <body>
 
+
+<div id="bg-layer">
+  <header class="site-header">
+    <h1>セントラルホテル取手</h1>
+  </header>
+
+  <main class="site-main">
+    <h2>ご案内</h2>
+    <p>チェックイン 15:00 / チェックアウト 10:00</p>
+    <p>無料駐車場・館内Wi-Fi完備</p>
+
+    <h2>アクセス</h2>
+    <p>矢田部ＩＣより車で約30分</p>
+  </main>
+
+  <footer class="site-footer">
+    © Central Hotel Toride
+  </footer>
+</div>
+
+
+<div id="chat-layer">
+
 <div id="chatbox">
   <div id="chatHeader">
     <span class="backBtn" title="公式サイトへ戻る">←</span>
     <div>
       矢印クリックで公式サイトへ..<br>
-      セントラルホテル取手Q&Aチャット<br>
+      セントラルホテル取手Q&Aチャットです<br>
       質問は直接入力、スマホ音声入力対応！
     </div>
   </div>
@@ -147,17 +216,21 @@ html, body { margin: 0; padding: 0; }
   <div id="messages"></div>
 
   <div id="inputArea">
-    <input id="userInput" placeholder="ご質問をどうぞ…">
+    <input id="userInput" placeholder="">
     <button id="micBtn">🎤</button>
     <button id="sendBtn">送信</button>
   </div>
 </div>
 
+</div>
+
 <script>
-/* ===== 戻る ===== */
-document.querySelector(".backBtn").onclick = ()=>{
+
+
+document.querySelector(".backBtn").onclick = () => {
   window.location.href = "https://www.centralhoteltoride.com/";
 };
+
 
   
 /* ===== FAQ（例：ここに全文入れてOK） ===== */
@@ -428,7 +501,6 @@ answer:`お掃除は毎朝10：00より開始となります。要・不要に�
 }
 ];
 
-/* ===== QAロジック ===== */
 function findAnswer(query){
   query = query.toLowerCase();
   for(const item of faq){
@@ -436,125 +508,129 @@ function findAnswer(query){
       if(query.includes(kw)) return item.answer;
     }
   }
-  return "申し訳ありません。その質問にはまだ対応していません。0297-72-1123までお問い合わせください。";
+  return "申し訳ありません。頂いたご質問にはまだ対応していません。0297-72-1123までお問い合わせください。";
 }
 
-/* ===== DOM ===== */
 const messages = document.getElementById("messages");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 const micBtn = document.getElementById("micBtn");
 
-/* ===== タイプライター表示（bot専用） ===== */
 function addBotMessageTypewriter(text){
   const div = document.createElement("div");
   div.className = "msg bot";
   messages.appendChild(div);
   let i = 0;
   const timer = setInterval(()=>{
-    div.textContent += text.charAt(i);
-    i++;
+    div.textContent += text.charAt(i++);
     messages.scrollTop = messages.scrollHeight;
     if(i >= text.length) clearInterval(timer);
   }, 25);
 }
 
-/* ===== メッセージ表示 ===== */
-function addMessage(msg,isUser=false){
+function addMessage(msg, isUser=false){
   if(isUser){
-    const div=document.createElement("div");
-    div.className="msg user";
-    div.textContent=msg;
+    const div = document.createElement("div");
+    div.className = "msg user";
+    div.textContent = msg;
     messages.appendChild(div);
-    messages.scrollTop=messages.scrollHeight;
+    messages.scrollTop = messages.scrollHeight;
   }else{
     addBotMessageTypewriter(msg);
   }
 }
 
-/* ===== 送信 ===== */
-sendBtn.onclick=()=>{
-  const msg=userInput.value.trim();
-  if(!msg)return;
-  addMessage(msg,true);
-  setTimeout(()=>addMessage(findAnswer(msg)),100);
-  userInput.value="";
+sendBtn.onclick = () => {
+  const msg = userInput.value.trim();
+  if(!msg) return;
+  addMessage(msg, true);
+  setTimeout(()=>addMessage(findAnswer(msg)), 100);
+  userInput.value = "";
 };
 
-/* ===== Enterキー送信（PC） ===== */
-userInput.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
+userInput.addEventListener("keydown", e=>{
+  if(e.key === "Enter"){
     e.preventDefault();
     sendBtn.click();
   }
 });
 
-/* ===== プレースホルダー回転 ===== */
-const placeholders=[
+const placeholders = [
   "ご質問を入力ください",
   "音声入力はマイクをPush！",
   "チェックイン時の不明点や、",
   "駐車場、食事などお尋ねください",
   "お電話なら0297-72-1123まで.."
 ];
-let phIndex=0;
+let phIndex = 0;
 setInterval(()=>{
-  userInput.placeholder=placeholders[phIndex];
-  phIndex=(phIndex+1)%placeholders.length;
-},3000);
+  userInput.placeholder = placeholders[phIndex];
+  phIndex = (phIndex + 1) % placeholders.length;
+}, 3000);
 
-/* ===== 音声入力 ===== */
-let recognition=null;
+let recognition = null;
+let isRecording = false;
 
-if(window.SpeechRecognition||window.webkitSpeechRecognition){
-  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-  recognition=new SR();
-  recognition.lang="ja-JP";
+if(window.SpeechRecognition || window.webkitSpeechRecognition){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = "ja-JP";
 
-  recognition.onstart=()=>{
+  recognition.onstart = ()=>{
+    isRecording = true;
     micBtn.classList.add("recording");
-    micBtn.textContent="●";
+    micBtn.textContent = "●";
   };
-
-  recognition.onend=()=>{
+  recognition.onend = recognition.onerror = ()=>{
+    isRecording = false;
     micBtn.classList.remove("recording");
-    micBtn.textContent="🎤";
+    micBtn.textContent = "🎤";
   };
-
-  recognition.onerror=()=>{
-    micBtn.classList.remove("recording");
-    micBtn.textContent="🎤";
-  };
-
-  recognition.onresult=e=>{
-    userInput.value=e.results[0][0].transcript;
+  recognition.onresult = e=>{
+    userInput.value = e.results[0][0].transcript;
     sendBtn.click();
   };
 }
 
-micBtn.onclick=()=>{
-  if(recognition){
-    recognition.start();
-  }else{
-    alert("このブラウザでは音声入力に対応していません。");
-  }
-};
+function startVoice(){
+  const ua = navigator.userAgent;
 
-/* ===== 無操作2分でホームへ ===== */
-const AUTO_CLOSE_TIME=120000;
-let autoTimer=null;
+  if(ua.includes("Edg/")){
+    alert("Edgeでは音声入力は利用できません。\nChrome または Safari をご利用ください。");
+    return;
+  }
+  if(!recognition){
+    alert("このブラウザでは音声入力に対応していません。");
+    return;
+  }
+  if(isRecording) return;
+
+  try{ recognition.start(); }catch(e){}
+}
+
+micBtn.onclick = startVoice;
+
+micBtn.addEventListener("pointerdown", e=>{
+  e.preventDefault();
+  startVoice();
+});
+
+const AUTO_CLOSE_TIME = 180000;
+let autoTimer = null;
 
 function resetTimer(){
   clearTimeout(autoTimer);
-  autoTimer=setTimeout(()=>{
-    window.location.href="https://www.centralhoteltoride.com/";
-  },AUTO_CLOSE_TIME);
+  autoTimer = setTimeout(()=>{
+    window.location.href = "https://www.centralhoteltoride.com/";
+  }, AUTO_CLOSE_TIME);
 }
 
-["click","keydown","touchstart","mousemove","scroll"].forEach(e=>{
-  document.addEventListener(e,resetTimer,{passive:true});
+["click","keydown","mousemove","scroll","pointerdown"].forEach(ev=>{
+  document.addEventListener(ev, resetTimer, { passive:true });
 });
 resetTimer();
+
+
 </script>
 
 </body>
