@@ -207,7 +207,7 @@ html, body {
   <div id="chatHeader">
     <span class="backBtn" title="公式サイトへ戻る">◀</span>
     <div>
-      左印クリックで公式サイトへ..<br>    
+      矢印クリックで公式サイトへ..<br>
       セントラルホテル取手Q&Aチャットです<br>
       質問は直接入力、スマホ音声入力対応！
     </div>
@@ -225,6 +225,32 @@ html, body {
 </div>
 
 <script>
+
+
+document.addEventListener("contextmenu", function(e){
+  e.preventDefault();
+});
+
+document.addEventListener("selectstart", function(e){
+  e.preventDefault();
+});
+
+document.addEventListener("keydown", function(e){
+  if (
+    (e.ctrlKey && ["c","u","s","p","a"].includes(e.key.toLowerCase())) ||
+    e.key === "F12"
+  ){
+    e.preventDefault();
+  }
+});
+
+
+document.addEventListener("touchstart", function(e){
+  if(e.touches.length > 1){
+    e.preventDefault();
+  }
+}, {passive:false});
+
 
 
 document.querySelector(".backBtn").onclick = () => {
