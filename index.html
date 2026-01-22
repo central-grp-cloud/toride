@@ -687,7 +687,7 @@ let isRecording = false;
 if(window.SpeechRecognition || window.webkitSpeechRecognition){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SR();
-  recognition.lang = "ja-JP"; // 初期値、i18nで更新
+  recognition.lang = "ja-JP"; 
   recognition.onstart = ()=>{
     isRecording = true;
     micBtn.classList.add("recording");
@@ -738,7 +738,7 @@ function resetTimer(){
 resetTimer();
 
 
-let placeholders = []; // 事前宣言
+let placeholders = []; 
 i18next
   .use(i18nextBrowserLanguageDetector)
   .init({
@@ -776,13 +776,13 @@ i18next
           copyright: '© Central Hotel Group',
           chatHeaderText: 'Click arrow to return to official site..<br>Central Hotel Toride Q&A Chat<br>Enter questions directly, supports smartphone voice input!',
           send: 'Send',
-          noAnswer: 'Sorry, we cannot answer your question yet. Please call 0297-72-1123.',
+          noAnswer: 'Sorry, we cannot answer your question yet. Please call +81-297-72-1123.',
           placeholders: [
             'Please enter your question',
             'Push mic for voice input!',
             'Questions about check-in,',
             'parking, meals, etc.',
-            'Call 0297-72-1123..'
+            'Call +81-297-72-1123..'
           ]
         }
       }
