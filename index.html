@@ -8,7 +8,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/25.5.2/i18next.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/8.2.0/i18nextBrowserLanguageDetector.min.js"></script>
   <style>
-    
     *, *::before, *::after { box-sizing: border-box; }
     html, body {
       margin: 0;
@@ -106,10 +105,11 @@
     }
     #userInput {
       flex: 1;
-      padding: 8px;
+      height: 44px;              
+      padding: 0 12px;           
       border: 1px solid #ccc;
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 16px;           
     }
     #micBtn,
     #sendBtn {
@@ -1793,7 +1793,7 @@ const faq = {
 function findAnswer(query){
   query = query.toLowerCase();
   const detectedLang = i18next.language || 'ja';
-  const baseLang = detectedLang.split('-')[0]; 
+  const baseLang = detectedLang.split('-')[0];
   const lang = faq[detectedLang] ? detectedLang : (faq[baseLang] ? baseLang : 'ja');
   const faqList = faq[lang];
   for(const item of faqList){
@@ -1847,7 +1847,7 @@ let isRecording = false;
 if(window.SpeechRecognition || window.webkitSpeechRecognition){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SR();
-  recognition.lang = "ja-JP"; 
+  recognition.lang = "ja-JP";
   recognition.onstart = ()=>{
     isRecording = true;
     micBtn.classList.add("recording");
@@ -1893,8 +1893,7 @@ function resetTimer(){
   document.addEventListener(ev, resetTimer, { passive:true });
 });
 resetTimer();
-
-let placeholders = []; 
+let placeholders = [];
 i18next
   .use(i18nextBrowserLanguageDetector)
   .init({
@@ -2072,22 +2071,22 @@ i18next
       }
     }
   }, function(err, t) {
-    
+   
     console.log('Detected language:', i18next.language);
-    
+   
     document.querySelectorAll('[data-i18n]').forEach(el => {
       el.innerHTML = t(el.dataset.i18n);
     });
     document.title = t('siteHeader') + ' Q&A Chat';
-    
+   
     placeholders = t('placeholders', { returnObjects: true });
-    
+   
     let phIndex = 0;
     setInterval(() => {
       userInput.placeholder = placeholders[phIndex];
       phIndex = (phIndex + 1) % placeholders.length;
     }, 3000);
-    
+   
     if (recognition) {
       const lang = i18next.language || 'ja';
       if (lang.startsWith('ja')) {
@@ -2095,7 +2094,7 @@ i18next
       } else if (lang.startsWith('en')) {
         recognition.lang = 'en-US';
       } else if (lang.startsWith('zh')) {
-        recognition.lang = lang; 
+        recognition.lang = lang;
       } else if (lang.startsWith('vi')) {
         recognition.lang = 'vi-VN';
       } else if (lang.startsWith('th')) {
