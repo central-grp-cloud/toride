@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   <title>セントラルホテルグループQ&Aチャット</title>
-  <!-- i18next （最新安定版） -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.11.5/i18next.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/7.1.0/i18nextBrowserLanguageDetector.min.js"></script>
+  <!-- i18next CDN追加 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/25.5.2/i18next.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/8.2.0/i18nextBrowserLanguageDetector.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
     html, body {
@@ -68,7 +68,6 @@
       font-weight: bold;
       display: flex;
       gap: 8px;
-      white-space: pre-line; 
     }
     #chatHeader .backBtn {
       cursor: pointer;
@@ -111,6 +110,9 @@
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 16px;
+    }
+    #userInput:focus {
+      outline: none;  
     }
     #micBtn,
     #sendBtn {
@@ -206,6 +208,13 @@ document.addEventListener("keydown", function(e){
     e.preventDefault();
   }
 });
+
+window.addEventListener('load', function() {
+  if (history && history.replaceState) {
+    history.replaceState(null, '', '/セントラルホテルグループQAチャット');
+  }
+});
+
 document.querySelector(".backBtn").onclick = () => {
   window.location.href = "https://www.centralhoteltoride.com/";
 };
@@ -1613,6 +1622,7 @@ const faq = {
 }
   ]
 };
+
 function findAnswer(query){
   query = query.toLowerCase();
   const detectedLang = i18next.language || 'ja';
@@ -1886,7 +1896,7 @@ i18next
           placeholders: [
             'โปรดป้อนคำถามของคุณ',
             'กดไมค์สำหรับการป้อนข้อมูลด้วยเสียง!',
-            'คำถามเกี่ยวกับการเช็คอิน,',
+            'คำถามเกี่ยวกับการเช็คอイン,',
             'ที่จอดรถ, อาหาร, ฯลฯ',
             'โทร +81-297-72-1123..'
           ]
@@ -1900,7 +1910,7 @@ i18next
     document.querySelectorAll('[data-i18n]').forEach(el => {
       el.innerHTML = t(el.dataset.i18n);
     });
-    document.title = t('siteHeader') + ' Q&A Chat';
+    document.title = 'セントラルホテルグループ Q&A チャット';
   
     placeholders = t('placeholders', { returnObjects: true });
   
@@ -1908,7 +1918,7 @@ i18next
     setInterval(() => {
       userInput.placeholder = placeholders[phIndex];
       phIndex = (phIndex + 1) % placeholders.length;
-    }, 4000); // 間隔を調整
+    }, 3000);
   
     if (recognition) {
       const lang = i18next.language || 'ja';
